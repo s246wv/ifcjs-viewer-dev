@@ -1,0 +1,10 @@
+{
+    "title": "IFCビューアー",
+    "openFile": "ファイルを開く",
+    "clip": "断面ツール",
+    "about": "本ツールについて",
+    "rightClick": "右クリック",
+    "createAPlane": "断面を設定する",
+    "doubleClick": "ダブルクリック",
+    "pickAnItem": "要素の詳細を表示する"
+}

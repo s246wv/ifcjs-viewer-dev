@@ -32,6 +32,12 @@ import { FolderOpenOutlined, CompareArrowsSharp, HelpOutline, GitHub } from '@mu
 import { IfcViewerAPI } from 'web-ifc-viewer';
 import { IfcContainer } from './IfcContainer';
 
+import i18n from 'i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import enJson from '../../public/locales/en/locale.json';
+import jaJson from '../../public/locales/ja/locale.json';
+
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -99,6 +105,22 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+const detector = new LanguageDetector(null, {
+  order: ['querystring', 'cookie',  'navigator', 'localStorage', 'htmlTag']
+});
+
+i18n.use(initReactI18next)
+.use(detector)
+.init(
+  {
+    resources: {
+      en: { translation: enJson},
+      ja: { translation: jaJson},
+    },
+    fallbackLng: 'ja',
+  }
+);
+
 function App() {
   const theme = useTheme();
 
@@ -112,6 +134,8 @@ function App() {
   const [viewer, setViewer] = useState<IfcViewerAPI>();
   const [ifcLoadingErrorMessage, setIfcLoadingErrorMessage] = useState<string>();
 
+  const [t, i18n] = useTranslation();
+
   useEffect(() => {
     if (ifcContainer.current) {
       const container = ifcContainer.current;
@@ -124,6 +148,7 @@ function App() {
       });
       setViewer(ifcViewer);
     }
+
   }, []);
 
   const ifcOnLoad = async (e) => {
@@ -178,7 +203,9 @@ function App() {
               <MenuIcon />
             </IconButton>
             <Typography variant='h6' noWrap component='div'>
-              Ifc.js React MUI Viewer
+              {/* Ifc.js React MUI Viewer */}
+              {t('title')}
+              {console.log(t('title'))}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -202,7 +229,7 @@ function App() {
                 <ListItemIcon>
                   <FolderOpenOutlined />
                 </ListItemIcon>
-                <ListItemText primary={'Open File'} />
+                <ListItemText primary={t('openFile')} />
               </ListItem>
             </label>
             <ListItem button key={'showPlane'} onClick={() => toggleClippingPlanes()}
@@ -210,7 +237,7 @@ function App() {
               <ListItemIcon>
                 <CompareArrowsSharp />
               </ListItemIcon>
-              <ListItemText primary={'Clipping Planes'} />
+              <ListItemText primary={t('clip')} />
             </ListItem>
           </List>
           <Divider />
@@ -219,7 +246,7 @@ function App() {
               <ListItemIcon>
                 <HelpOutline />
               </ListItemIcon>
-              <ListItemText primary={'About'} />
+              <ListItemText primary={t('about')} />
             </ListItem>
           </List>
         </Drawer>
@@ -239,23 +266,21 @@ function App() {
       </Backdrop>
 
       <Dialog onClose={() => setDialogOpen(false)} open={isDialogOpen}>
-        <DialogTitle>About</DialogTitle>
+        <DialogTitle>{t('about')}</DialogTitle>
         <DialogContent>
           <List dense>
             <ListItem>
               <ListItemText
-                primary='right-click' secondary='Create a Plan'
+                primary={t('rightClick')} secondary={t('createAPlane')}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary='double-click' secondary='Pick an Item'
+                primary={t('doubleClick')} secondary={t('pickAnItem')}
               />
             </ListItem>
           </List>
-          <Link href='https://github.com/IFCjs' underline='hover' target='_blank'>
-            Join us on GitHub
-          </Link>
+          <Link href='https://github.com/s246wv/ifcjs-viewer-dev' underline='hover' target='_blank' >GitHub Repo</Link>
           <GitHub />
         </DialogContent>
       </Dialog>

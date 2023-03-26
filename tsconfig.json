@@ -22,7 +22,8 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "importHelpers": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "include": [
     "**/*.ts",

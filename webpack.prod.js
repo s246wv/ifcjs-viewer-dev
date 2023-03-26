@@ -15,6 +15,7 @@ module.exports = merge(common, {
       patterns: [
         { from: './public/favicon.ico', to: '.' },
         { from: './public/web-ifc.wasm', to: '.' },
+        { from: './public/locales/', to: 'locales' },
       ],
     }),
   ],
