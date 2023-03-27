@@ -6,5 +6,7 @@
     "rightClick": "Right Click",
     "createAPlane": "Create a Plane",
     "doubleClick": "Double Click",
-    "pickAnItem": "Pick an Item"
+    "pickAnItem": "Pick an Item",
+    "errorLoadIfc": "Error loading the IFC File. Check the console for more information.",
+    "successLoadIfc": "IFC File loaded successfully!"
 }
