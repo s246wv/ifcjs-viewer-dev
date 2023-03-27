@@ -31,7 +31,6 @@ const IfcContainer = forwardRef<HTMLDivElement, IfcContainerProps>((props, ref) 
 
   const ifcOnClick = async (event) => {
     if (viewer) {
-      // const result = await viewer.IFC.pickIfcItem(true);
       const result = await viewer.IFC.selector.pickIfcItem(true);
       if (result) {
         const props = await viewer.IFC.getProperties(result.modelID, result.id, false);
