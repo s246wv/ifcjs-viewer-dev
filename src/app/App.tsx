@@ -21,6 +21,7 @@ import {
   ListItemText,
   Snackbar,
   Typography,
+  ListItemButton
 } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -140,8 +141,10 @@ function App() {
     if (ifcContainer.current) {
       const container = ifcContainer.current;
       const ifcViewer = new IfcViewerAPI({ container, backgroundColor: new Color(0xffffff) });
-      ifcViewer.addAxes();
-      ifcViewer.addGrid();
+      // ifcViewer.addAxes();
+      ifcViewer.axes.setAxes();
+      // ifcViewer.addGrid();
+      ifcViewer.grid.setGrid();
       ifcViewer.IFC.loader.ifcManager.applyWebIfcConfig({
         COORDINATE_TO_ORIGIN: true,
         USE_FAST_BOOLS: false
@@ -175,7 +178,8 @@ function App() {
 
   const toggleClippingPlanes = () => {
     if (viewer) {
-      viewer.toggleClippingPlanes();
+      // viewer.toggleClippingPlanes();
+      viewer.clipper.toggle();
       if (viewer.clipper.active) {
         setClippingPaneSelected(true);
       } else {
@@ -203,9 +207,7 @@ function App() {
               <MenuIcon />
             </IconButton>
             <Typography variant='h6' noWrap component='div'>
-              {/* Ifc.js React MUI Viewer */}
               {t('title')}
-              {console.log(t('title'))}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -225,29 +227,47 @@ function App() {
               style={{ display: 'none' }}
             />
             <label htmlFor='file'>
-              <ListItem button key={'openFile'}>
+              <ListItemButton key={'openFile'}>
                 <ListItemIcon>
                   <FolderOpenOutlined />
                 </ListItemIcon>
                 <ListItemText primary={t('openFile')} />
-              </ListItem>
+              </ListItemButton>
+              {/* <ListItem button key={'openFile'}>
+                <ListItemIcon>
+                  <FolderOpenOutlined />
+                </ListItemIcon>
+                <ListItemText primary={t('openFile')} />
+              </ListItem> */}
             </label>
-            <ListItem button key={'showPlane'} onClick={() => toggleClippingPlanes()}
+            <ListItemButton key={'showPlane'} onClick={ () => toggleClippingPlanes()} selected={isClippingPaneSelected}>
+              <ListItemIcon>
+                <CompareArrowsSharp />
+              </ListItemIcon>
+              <ListItemText primary={t('clip')} />
+            </ListItemButton>
+            {/* <ListItem button key={'showPlane'} onClick={() => toggleClippingPlanes()}
               selected={isClippingPaneSelected}>
               <ListItemIcon>
                 <CompareArrowsSharp />
               </ListItemIcon>
               <ListItemText primary={t('clip')} />
-            </ListItem>
+            </ListItem> */}
           </List>
           <Divider />
           <List>
-            <ListItem button key={'About'} onClick={() => setDialogOpen(true)} >
+            <ListItemButton key={'About'} onClick={ () => setDialogOpen(true)}>
               <ListItemIcon>
                 <HelpOutline />
               </ListItemIcon>
               <ListItemText primary={t('about')} />
-            </ListItem>
+            </ListItemButton>
+            {/* <ListItem button key={'About'} onClick={() => setDialogOpen(true)} >
+              <ListItemIcon>
+                <HelpOutline />
+              </ListItemIcon>
+              <ListItemText primary={t('about')} />
+            </ListItem> */}
           </List>
         </Drawer>
         <Box component='main' sx={{ flexGrow: 1 }}>
