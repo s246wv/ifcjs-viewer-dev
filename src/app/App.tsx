@@ -286,10 +286,10 @@ function App() {
       <Snackbar open={isSnackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
         {ifcLoadingErrorMessage ?
           <Alert onClose={() => setSnackbarOpen(false)} severity="error" sx={{ width: '100%' }}>
-            Error loading the IFC File. Check the console for more information.
+            {t('errorLoadIfc')}
           </Alert>
           : <Alert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: '100%' }}>
-            IFC File loaded successfully!
+            {t('successLoadIfc')}
           </Alert>}
       </Snackbar>
     </>

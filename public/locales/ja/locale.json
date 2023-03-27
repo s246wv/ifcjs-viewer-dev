@@ -6,5 +6,7 @@
     "rightClick": "右クリック",
     "createAPlane": "断面を設定する",
     "doubleClick": "ダブルクリック",
-    "pickAnItem": "要素の詳細を表示する"
+    "pickAnItem": "要素の詳細を表示する",
+    "errorLoadIfc": "IFCファイルの読み込みに失敗しました．F12キーを押してコンソールの情報を確認してください．",
+    "successLoadIfc": "IFCファイルを読み込みました！"
 }
