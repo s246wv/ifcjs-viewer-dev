@@ -24,6 +24,7 @@
     "web-ifc-viewer": "^1.0.134"
   },
   "devDependencies": {
+    "buffer": "^6.0.3",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.2.0",
     "file-loader": "^6.2.0",

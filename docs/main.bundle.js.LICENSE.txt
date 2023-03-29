@@ -15,11 +15,20 @@ object-assign
 */
 
 /*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!
  * camera-controls
  * https://github.com/yomotsu/camera-controls
  * (c) 2017 @yomotsu
  * Released under the MIT License.
  */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /**
  * @license
