@@ -35,24 +35,15 @@ const IfcContainer = forwardRef<HTMLDivElement, IfcContainerProps>((props, ref) 
     const expr = /\\X2\\.*?\\X0\\/g;
     let ret = s;
     console.log("ret:" + ret);
-    // let matchedStrings = expr.exec(ret);
     let matchedStrings = ret.matchAll(expr);
     if (matchedStrings) {
       const decoder = new TextDecoder("UTF-16be");
       for (let matches of matchedStrings) {
-        console.log(matchedStrings);
         for (let m of matches) {
-          // for (let i=0; i<matchedStrings.length; i++){
-          console.log(matches);
-          // let m = matchedStrings[0];
-          console.log("m: " + m);
           let hex = m.replace("\\X2\\", "").replace("\\X0\\", "");
-          console.log("hex: " + hex);
           let bf = Buffer.from(hex, 'hex');
           let decodedString = decoder.decode(bf);
-          console.log("decodedString: " + decodedString);
           ret = ret.replaceAll(m, decodedString);
-          console.log("replaced ret: " + ret);
         }
       }
     }
@@ -72,10 +63,8 @@ const IfcContainer = forwardRef<HTMLDivElement, IfcContainerProps>((props, ref) 
           let ifcRecords: IfcRecord = {};
           ifcRecords['Entity Type'] = type;
           ifcRecords['GlobalId'] = props.GlobalId && props.GlobalId?.value;
-          // ifcRecords['Name'] = props.Name && props.Name?.value;
           const name = props.Name && props.Name?.value;
           ifcRecords['Name'] = decode_ifc_str(name);
-          // ifcRecords['ObjectType'] = props.ObjectType && props.ObjectType?.value;
           const object_type = props.ObjectType && props.ObjectType?.value;
           ifcRecords['ObjectType'] = decode_ifc_str(object_type);
           ifcRecords['PredefinedType'] = props.PredefinedType && props.PredefinedType?.value;
