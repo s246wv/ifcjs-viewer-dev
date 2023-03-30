@@ -61,12 +61,20 @@ const IfcContainer = forwardRef<HTMLDivElement, IfcContainerProps>((props, ref) 
         // convert props to record
         if (props) {
           let ifcRecords: IfcRecord = {};
-          ifcRecords['Entity Type'] = type;
-          ifcRecords['GlobalId'] = props.GlobalId && props.GlobalId?.value;
+          if(type){
+            ifcRecords['Entity Type'] = type;
+          }
+          if(props.GlobalId || props.GlobalId?.value){ 
+            ifcRecords['GlobalId'] = props.GlobalId && props.GlobalId?.value;
+          }
           const name = props.Name && props.Name?.value;
-          ifcRecords['Name'] = decode_ifc_str(name);
+          if(name){
+            ifcRecords['Name'] = decode_ifc_str(name);
+          }
           const object_type = props.ObjectType && props.ObjectType?.value;
-          ifcRecords['ObjectType'] = decode_ifc_str(object_type);
+          if(object_type){
+            ifcRecords['ObjectType'] = decode_ifc_str(object_type);
+          }
           ifcRecords['PredefinedType'] = props.PredefinedType && props.PredefinedType?.value;
           setIfcRecords(ifcRecords);
         }
