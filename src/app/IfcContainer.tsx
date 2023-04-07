@@ -34,7 +34,7 @@ const IfcContainer = forwardRef<HTMLDivElement, IfcContainerProps>((props, ref) 
   const decode_ifc_str = (s: string) => {
     const expr = /\\X2\\.*?\\X0\\/g;
     let ret = s;
-    console.log("ret:" + ret);
+    // console.log("ret:" + ret);
     let matchedStrings = ret.matchAll(expr);
     if (matchedStrings) {
       const decoder = new TextDecoder("UTF-16be");

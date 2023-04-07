@@ -32,6 +32,7 @@ import { FolderOpenOutlined, CompareArrowsSharp, HelpOutline, GitHub } from '@mu
 
 import { IfcViewerAPI } from 'web-ifc-viewer';
 import { IfcContainer } from './IfcContainer';
+import { IFCSPACE, IFCWALLSTANDARDCASE } from 'web-ifc';
 
 import i18n from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
@@ -107,20 +108,20 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const detector = new LanguageDetector(null, {
-  order: ['querystring', 'cookie',  'navigator', 'localStorage', 'htmlTag']
+  order: ['querystring', 'cookie', 'navigator', 'localStorage', 'htmlTag']
 });
 
 i18n.use(initReactI18next)
-.use(detector)
-.init(
-  {
-    resources: {
-      en: { translation: enJson},
-      ja: { translation: jaJson},
-    },
-    fallbackLng: 'ja',
-  }
-);
+  .use(detector)
+  .init(
+    {
+      resources: {
+        en: { translation: enJson },
+        ja: { translation: jaJson },
+      },
+      fallbackLng: 'ja',
+    }
+  );
 
 function App() {
   const theme = useTheme();
@@ -135,6 +136,8 @@ function App() {
   const [viewer, setViewer] = useState<IfcViewerAPI>();
   const [ifcLoadingErrorMessage, setIfcLoadingErrorMessage] = useState<string>();
 
+  const [ifcModels, setIfcModels] = useState<number[]>([]);
+
   const [t, i18n] = useTranslation();
 
   useEffect(() => {
@@ -142,7 +145,7 @@ function App() {
       const container = ifcContainer.current;
       const ifcViewer = new IfcViewerAPI({ container, backgroundColor: new Color(0xffffff) });
       ifcViewer.axes.setAxes();
-      ifcViewer.grid.setGrid();
+      // ifcViewer.grid.setGrid();
       ifcViewer.IFC.loader.ifcManager.applyWebIfcConfig({
         COORDINATE_TO_ORIGIN: true,
         USE_FAST_BOOLS: false
@@ -162,7 +165,13 @@ function App() {
 
       // load file
       const model = await viewer.IFC.loadIfc(file, true, ifcOnLoadError);
+      const ifcmodelid: number = model.modelID;
+      ifcModels.push(ifcmodelid);
+      setIfcModels(ifcModels);
+
+      // await hideTransparentObject(model.modelID);
       await viewer.shadowDropper.renderShadow(model.modelID);
+      // await hideTransparentObject(ifcModels[0]);
 
       // update information
       setSnackbarOpen(true);
@@ -184,6 +193,28 @@ function App() {
       }
     }
   }
+
+  // hide IfcSpace.
+  // いったんあきらめる．
+  // const hideTransparentObject = async (ifcModelId: number) => {
+  //   if (viewer) {
+  //     const manager = viewer.IFC;
+  //     let modelIds: number[] = await manager.getAllItemsOfType(ifcModelId, IFCWALLSTANDARDCASE);
+  //     console.log(modelIds);
+  //     const subset = manager.loader.ifcManager.createSubset({
+  //       scene: viewer.context.scene.scene,
+  //       modelID: ifcModelId,
+  //       ids: modelIds,
+  //       removePrevious: true
+  //     });
+  //     console.log(subset);
+  //     console.log(subset.parent);
+  //     console.log(viewer.context.scene.scene);
+  //     subset.removeFromParent();
+  //     subset.visible = false;
+  //   }
+  // }
+
 
   return (
     <>
@@ -231,7 +262,7 @@ function App() {
                 <ListItemText primary={t('openFile')} />
               </ListItemButton>
             </label>
-            <ListItemButton key={'showPlane'} onClick={ () => toggleClippingPlanes()} selected={isClippingPaneSelected}>
+            <ListItemButton key={'showPlane'} onClick={() => toggleClippingPlanes()} selected={isClippingPaneSelected}>
               <ListItemIcon>
                 <CompareArrowsSharp />
               </ListItemIcon>
@@ -240,7 +271,7 @@ function App() {
           </List>
           <Divider />
           <List>
-            <ListItemButton key={'About'} onClick={ () => setDialogOpen(true)}>
+            <ListItemButton key={'About'} onClick={() => setDialogOpen(true)}>
               <ListItemIcon>
                 <HelpOutline />
               </ListItemIcon>
@@ -248,7 +279,7 @@ function App() {
             </ListItemButton>
           </List>
         </Drawer>
-        <Box component='main' sx={{ flexGrow: 1 }}>
+        <Box component='main' sx={{ flexGrow: 0.9 }}>
           <DrawerHeader />
           <IfcContainer
             ref={ifcContainer}
